@@ -1,0 +1,132 @@
+.promo-grid > ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.promo-grid-card {
+    overflow: hidden;
+    border: 1px solid #dadada;
+    background-color: var(--background-color);
+}
+
+.promo-grid-card > img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+
+.promo-grid-card-body {
+    padding: 16px;
+}
+
+.promo-grid-card-category,
+.promo-grid-card-price {
+    margin: 0 0 8px;
+    color: #666;
+    font-size: 14px;
+}
+
+.promo-grid-card h2 {
+    margin: 0 0 12px;
+    font-size: 20px;
+}
+
+.promo-grid-card-price {
+    margin-bottom: 0;
+    color: #111;
+    font-weight: 700;
+}
+.promo-grid {
+    margin: 48px 0;
+}
+
+.promo-grid-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
+    gap: 24px;
+    margin:0;
+    padding:0;
+    list-style: none;
+}
+
+.promo-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.promo-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 24px rgb(0 0 0 / 15%);
+}
+
+.promo-card-image {
+    overflow: hidden;
+    width: 150px;
+    height: 150px;
+}
+
+.promo-card-image img,
+.promo-card-image picture {
+    display: block;
+    width: 100%;
+}
+
+.promo-card-image img {
+    height: 220px;
+    object-fit: cover;
+}
+
+.promo-card-content {
+    padding: 20px;
+}
+
+.promo-card-content h3 {
+    margin: 0 0 12px;
+    font-size: 1.5rem;
+    color: #111827;
+}
+
+.promo-card-content p {
+    margin: 0;
+    color: #6b7280;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.promo-card-cta {
+    border:none;
+    padding: 8px 16px;
+    margin-top: 16px;
+    display: inline-block;
+    font-weight: 600;
+    text-decoration: none;
+    background: rgb(140, 33, 33);
+    color:white;
+}
+
+
+
+@media (max-width: 768px) {
+    .promo-grid-container {
+        grid-template-columns: 1fr;
+    }
+
+    .promo-card-image img {
+        height: 200px;
+    }
+}
