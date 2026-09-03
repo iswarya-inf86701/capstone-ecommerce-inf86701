@@ -1,4 +1,60 @@
-export default function decorate(block) {
+import { createOptimizedPicture } from '../../scripts/aem.js';
+
+async function getIndexedItems(block) {
+  const response = await fetch('/query-index.json');
+  if (!response.ok) {
+    throw new Error(`Unable to load query index: ${response.status}`);
+  }
+
+  const json = await response.json();
+  const data = Array.isArray(json.data) ? json.data : [];
+  const isProductCarousel = block.classList.contains('product-carousel')
+    || block.classList.contains('products');
+
+  return data.filter((item) => {
+    const template = item.template?.toLowerCase();
+    if (isProductCarousel) return template === 'product';
+    return template === 'category'
+      && item.path?.startsWith('/eds-commerce/pages/categories/');
+  });
+}
+
+function renderIndexedItems(block, items) {
+  block.replaceChildren(...items.map((item) => {
+    const row = document.createElement('div');
+    const imageColumn = document.createElement('div');
+    const link = document.createElement('a');
+    link.href = item.path || '#';
+    link.title = item.title || '';
+    link.append(createOptimizedPicture(item.image, item.title || '', false, [{ width: '750' }]));
+    imageColumn.append(link);
+
+    const contentColumn = document.createElement('div');
+    const title = document.createElement('h3');
+    title.textContent = item.title || '';
+    contentColumn.append(title);
+
+    if (block.classList.contains('product-carousel') || block.classList.contains('products')) {
+      const description = document.createElement('p');
+      description.textContent = item.description || '';
+      const price = document.createElement('p');
+      price.textContent = item.price ? `$${item.price}` : '';
+      contentColumn.append(description, price);
+    }
+
+    row.append(imageColumn, contentColumn);
+    return row;
+  }));
+}
+
+export default async function decorate(block) {
+  if (block.classList.contains('category-carousel')
+    || block.classList.contains('product-carousel')
+    || block.classList.contains('categories')
+    || block.classList.contains('products')) {
+    const items = await getIndexedItems(block);
+    renderIndexedItems(block, items);
+  }
 
   // Remove empty rows created in EDS
   [...block.children].forEach((slide) => {

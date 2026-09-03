@@ -269,4 +269,27 @@ header nav .nav-sections ul > li > ul > li {
 /* tools */
 header nav .nav-tools {
   grid-area: tools;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+header nav .nav-cart {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: currentcolor;
+}
+
+header nav .nav-cart img {
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+
+header nav .nav-cart:focus-visible {
+  outline: 2px solid currentcolor;
+  outline-offset: 4px;
 }

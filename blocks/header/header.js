@@ -151,6 +151,17 @@ export default async function decorate(block) {
     });
   }
 
+  const navTools = nav.querySelector('.nav-tools');
+  if (navTools && !navTools.querySelector('.nav-cart')) {
+    const cartLink = document.createElement('a');
+    cartLink.className = 'nav-cart';
+    cartLink.href = '/cart';
+    cartLink.setAttribute('aria-label', 'Shopping cart');
+    cartLink.title = 'Shopping cart';
+    cartLink.innerHTML = '<img src="/icons/cart.svg" alt="">';
+    navTools.append(cartLink);
+  }
+
   // hamburger for mobile
   const hamburger = document.createElement('div');
   hamburger.classList.add('nav-hamburger');
