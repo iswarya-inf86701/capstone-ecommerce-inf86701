@@ -1,29 +1,35 @@
 export default async function decorate(block) {
-    const jsonUrl = block.querySelector('a')?.href
-        || block.textContent.trim();
+  const response = await fetch('/query-index.json');
+  if (!response.ok) {
+    throw new Error(`Unable to load query index: ${response.status}`);
+  }
 
-    const response = await fetch(`query-index.json`);
-    const json = await response.json();
+  const json = await response.json();
+  const data = Array.isArray(json.data) ? json.data : [];
 
-    const isCategoryGrid = block.classList.contains('categories');
-    const isProductGrid = block.classList.contains('products');
+    const isProductGrid = block.classList.contains('products')
+      || block.classList.contains('featured-products');
+    const isCategoryGrid = !isProductGrid;
 
-    const items = json.data.filter((item) => {
-        if (isCategoryGrid) {
-            return item.template === 'category';
-        }
+  const items = data.filter((item) => {
+    if (isCategoryGrid) {
+      return item.template?.toLowerCase() === 'category'
+        && item.path?.startsWith('/eds-commerce/pages/categories/');
+    }
 
-        if (isProductGrid) {
-            return item.template === 'product';
-        }
+    if (isProductGrid) {
+      return item.template?.toLowerCase() === 'product';
+    }
 
-        return false;
-    });
+    return false;
+  });
 
 
-    const cards = items.map((item) => `
+  const cards = items.map((item) => `
   <li class="promo-card">
-      <img class="promo-card-image" src="${item.image}" alt="${item.category}">
+      <a href="${item.path}" class="promo-card-link">
+        <img class="promo-card-image" src="${item.image}" alt="${item.title}">
+      </a>
 
       <div class="promo-card-content">
         <h3>${item.title}</h3>
@@ -35,7 +41,7 @@ export default async function decorate(block) {
     </li>
   `).join('');
 
-    block.innerHTML = `
+  block.innerHTML = `
     <ul class="promo-grid-list">
       ${cards}
     </ul>

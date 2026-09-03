@@ -13,11 +13,21 @@
     background-color: var(--background-color);
 }
 
-.promo-grid-card > img {
+.promo-grid-card > img,
+.promo-card-link {
     display: block;
     width: 100%;
+}
+
+.promo-grid-card > img,
+.promo-card-image {
     aspect-ratio: 4 / 3;
-    object-fit: cover;
+    object-fit: contain;
+}
+
+.promo-card-link {
+    color: inherit;
+    text-decoration: none;
 }
 
 .promo-grid-card-body {
@@ -75,9 +85,9 @@
 }
 
 .promo-card-image {
-    overflow: hidden;
-    width: 150px;
-    height: 150px;
+    display: block;
+    width: 100%;
+    height: auto;
 }
 
 .promo-card-image img,
