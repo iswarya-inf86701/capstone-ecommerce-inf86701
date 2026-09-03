@@ -2,7 +2,7 @@
    PRODUCT TEASER
    ========================================================= */
 
-.product-teaser {
+.featured-product-list {
   width: 100%;
   max-width: none;
   margin: 0;
@@ -15,7 +15,7 @@
    FULL WIDTH EDS SECTION
    ========================================================= */
 
-main .section:has(.product-teaser) {
+main .section:has(.featured-product-list) {
   width: 100%;
   max-width: none;
   margin: 0;
@@ -23,7 +23,7 @@ main .section:has(.product-teaser) {
   padding-right: 0;
 }
 
-main .section:has(.product-teaser) > div {
+main .section:has(.featured-product-list) > div {
   width: 100%;
   max-width: none;
   margin: 0;
@@ -36,7 +36,7 @@ main .section:has(.product-teaser) > div {
    MAIN CONTAINER
    ========================================================= */
 
-.product-teaser-container {
+.featured-product-list-container {
   width: 100%;
   max-width: 1600px;
 
@@ -56,7 +56,7 @@ main .section:has(.product-teaser) > div {
    LEFT - BEST SELLERS CONTENT
    ========================================================= */
 
-.product-teaser-intro {
+.featured-product-list-intro {
   flex: 0 0 30%;
 
   width: 30%;
@@ -72,7 +72,7 @@ main .section:has(.product-teaser) > div {
   box-sizing: border-box;
 }
 
-.product-teaser-intro h2 {
+.featured-product-list-intro h2 {
   width: 100%;
 
   margin: 0 0 12px;
@@ -85,7 +85,7 @@ main .section:has(.product-teaser) > div {
   line-height: 1.2;
 }
 
-.product-teaser-intro > p {
+.featured-product-list-intro > p {
   width: 100%;
   max-width: 300px;
 
@@ -103,7 +103,7 @@ main .section:has(.product-teaser) > div {
    SHOP NOW BUTTON
    ========================================================= */
 
-.product-teaser-shop {
+.featured-product-list-shop {
   display: inline-flex !important;
 
   align-items: center !important;
@@ -138,15 +138,15 @@ main .section:has(.product-teaser) > div {
   transition: background-color 0.2s ease;
 }
 
-.product-teaser-shop:link,
-.product-teaser-shop:visited,
-.product-teaser-shop:hover,
-.product-teaser-shop:active {
+.featured-product-list-shop:link,
+.featured-product-list-shop:visited,
+.featured-product-list-shop:hover,
+.featured-product-list-shop:active {
   color: #111 !important;
   text-decoration: none !important;
 }
 
-.product-teaser-shop:hover {
+.featured-product-list-shop:hover {
   background: #a5ff78 !important;
 }
 
@@ -155,7 +155,7 @@ main .section:has(.product-teaser) > div {
    PRODUCT GRID
    ========================================================= */
 
-.product-teaser-grid {
+.featured-product-list-grid {
   flex: 0 0 70%;
 
   width: 70%;
@@ -404,15 +404,15 @@ main .section:has(.product-teaser) > div {
    ========================================================= */
 
 @media (min-width: 1200px) {
-  .product-teaser-container {
+  .featured-product-list-container {
     max-width: 1600px;
   }
 
-  .product-teaser-intro {
+  .featured-product-list-intro {
     padding: 45px 5%;
   }
 
-  .product-teaser-grid {
+  .featured-product-list-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
 
     column-gap: 12px;
@@ -429,7 +429,7 @@ main .section:has(.product-teaser) > div {
    ========================================================= */
 
 @media (min-width: 901px) and (max-width: 1199px) {
-  .product-teaser-intro {
+  .featured-product-list-intro {
     flex: 0 0 30%;
 
     width: 30%;
@@ -437,11 +437,11 @@ main .section:has(.product-teaser) > div {
     padding: 35px 4%;
   }
 
-  .product-teaser-intro h2 {
+  .featured-product-list-intro h2 {
     font-size: 26px;
   }
 
-  .product-teaser-grid {
+  .featured-product-list-grid {
     flex: 0 0 70%;
 
     width: 70%;
@@ -472,28 +472,28 @@ main .section:has(.product-teaser) > div {
    ========================================================= */
 
 @media (min-width: 601px) and (max-width: 900px) {
-  .product-teaser-container {
+  .featured-product-list-container {
     display: block;
 
     width: 100%;
   }
 
-  .product-teaser-intro {
+  .featured-product-list-intro {
     width: 100%;
     min-width: 0;
 
     padding: 35px 30px 20px;
   }
 
-  .product-teaser-intro h2 {
+  .featured-product-list-intro h2 {
     font-size: 28px;
   }
 
-  .product-teaser-intro > p {
+  .featured-product-list-intro > p {
     max-width: 500px;
   }
 
-  .product-teaser-grid {
+  .featured-product-list-grid {
     width: 100%;
 
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -522,29 +522,29 @@ main .section:has(.product-teaser) > div {
    ========================================================= */
 
 @media (min-width: 481px) and (max-width: 600px) {
-  .product-teaser-container {
+  .featured-product-list-container {
     display: block;
 
     width: 100%;
   }
 
-  .product-teaser-intro {
+  .featured-product-list-intro {
     width: 100%;
 
     padding: 30px 25px 20px;
   }
 
-  .product-teaser-intro h2 {
+  .featured-product-list-intro h2 {
     font-size: 26px;
   }
 
-  .product-teaser-intro > p {
+  .featured-product-list-intro > p {
     max-width: 500px;
 
     font-size: 13px;
   }
 
-  .product-teaser-grid {
+  .featured-product-list-grid {
     width: 100%;
 
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -573,29 +573,29 @@ main .section:has(.product-teaser) > div {
    ========================================================= */
 
 @media (min-width: 361px) and (max-width: 480px) {
-  .product-teaser-container {
+  .featured-product-list-container {
     display: block;
 
     width: 100%;
   }
 
-  .product-teaser-intro {
+  .featured-product-list-intro {
     width: 100%;
 
     padding: 25px 20px 15px;
   }
 
-  .product-teaser-intro h2 {
+  .featured-product-list-intro h2 {
     font-size: 25px;
   }
 
-  .product-teaser-intro > p {
+  .featured-product-list-intro > p {
     max-width: 100%;
 
     font-size: 13px;
   }
 
-  .product-teaser-grid {
+  .featured-product-list-grid {
     width: 100%;
 
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -628,19 +628,19 @@ main .section:has(.product-teaser) > div {
    ========================================================= */
 
 @media (max-width: 360px) {
-  .product-teaser-container {
+  .featured-product-list-container {
     display: block;
 
     width: 100%;
   }
 
-  .product-teaser-intro {
+  .featured-product-list-intro {
     width: 100%;
 
     padding: 25px 20px 15px;
   }
 
-  .product-teaser-grid {
+  .featured-product-list-grid {
     width: 100%;
 
     grid-template-columns: 1fr;
