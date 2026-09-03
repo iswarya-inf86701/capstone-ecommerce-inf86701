@@ -22,10 +22,11 @@
   inset: 0;
   object-fit: cover;
   box-sizing: border-box;
+  background-color: #111;
 }
 
 .hero img {
-  object-fit: cover;
+  object-fit: fill;
   width: 100%;
   height: 100%;
 }
@@ -33,5 +34,134 @@
 @media (width >= 900px) {
   .hero {
     padding: 40px 32px;
+  }
+}
+
+/* for hero slide show*/
+.hero.slideshow {
+  position: relative;
+  min-height: 70vh;
+  overflow: hidden;
+}
+
+.hero.slideshow > div:first-child {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.hero.slideshow picture,
+.hero.slideshow img {
+  width: 100%;
+  height: 100%;
+}
+
+.hero.slideshow img {
+  object-fit: fill;
+  display: block;
+}
+
+.hero-controls button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid rgb(255 255 255 / 70%);
+  border-radius: 50%;
+  background-color: rgb(0 0 0 / 45%);
+  color: #fff;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.hero-controls button:hover {
+  background-color: rgb(0 0 0 / 75%);
+}
+
+.hero.slideshow > div:nth-child(2),
+.hero.slideshow > div:nth-child(3) {
+  position: relative;
+  z-index: 2;
+}
+
+.hero.slideshow > div:nth-child(2) {
+  max-width: 600px;
+  padding: 2rem;
+  margin-top: 20vh;
+  color: #fff;
+}
+
+.hero.slideshow h1 {
+  font-size: 2rem;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.hero.slideshow p {
+  font-size: 1rem;
+}
+
+.hero.slideshow .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #94ff5e;
+  color: #fff;
+  border-radius: 999px;
+  padding: 12px 24px;
+  text-decoration: none;
+  font-weight: 600;
+  border: 1px solid #94ff5e;
+}
+
+.hero-controls {
+  position: absolute;
+  right: 32px;
+  bottom: 60px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: #fff;
+}
+
+.hero-indicators {
+  position: absolute;
+  left: 32px;
+  bottom: 24px;
+  z-index: 5;
+  display: flex;
+  gap: 10px;
+}
+
+.hero-line {
+  width: 40px;
+  height: 3px;
+  background: rgba(255,255,255,.4);
+  border-radius: 20px;
+  transition: all .3s ease;
+}
+
+.hero-line.active {
+  width: 90px;
+  background: #fff;
+}
+
+/* Desktop */
+
+@media (min-width: 768px) {
+  .hero.slideshow {
+    min-height: 85vh;
+  }
+
+  .hero.slideshow h1 {
+    font-size: 4rem;
+  }
+
+  .hero.slideshow p {
+    font-size: 1.25rem;
   }
 }
