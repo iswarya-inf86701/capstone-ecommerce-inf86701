@@ -10,6 +10,8 @@ export default function decorate(block) {
     }
   });
 
+  if (images.length <= 1) return;
+
   const controls = document.createElement('div');
   controls.className = 'hero-controls';
 
