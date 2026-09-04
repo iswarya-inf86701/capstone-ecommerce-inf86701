@@ -73,9 +73,6 @@ export default async function decorate(block) {
   let currentIndex = 0;
   let autoplayTimer;
 
-  /*l,
-   * Create carousel track
-   */
   const track = document.createElement('div');
   track.className = 'carousel-track';
 

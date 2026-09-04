@@ -1,31 +1,305 @@
-/* Category grid - owns the listing layout only. The card itself is the
-   shared teaser, styled in /styles/product-teaser.css */
+/* =========================================================
+   CATEGORY GRID
+   ========================================================= */
 
-.category-grid-items {
+.category-grid {
+  width: 100%;
+  margin: 48px 0;
+}
+
+
+/* =========================================================
+   HEADING
+   ========================================================= */
+
+.category-grid-header {
+  margin-bottom: 24px;
+}
+
+.category-grid-heading {
+  margin: 0;
+
+  color: #111;
+
+  font-size: 1.5rem;
+  line-height: 1.25;
+
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   PRODUCT GRID
+   ========================================================= */
+
+.category-grid-list {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px 16px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 32px;
+
+  width: 100%;
+
+  box-sizing: border-box;
 }
 
-.category-grid-empty {
-  margin: 0;
-  padding: 24px 0;
-  color: var(--dark-color);
-  font-size: 15px;
+
+/* =========================================================
+   PRODUCT CARD
+   ========================================================= */
+
+.category-product-card {
+  display: flex;
+
+  min-width: 0;
+
+  flex-direction: column;
+
+  overflow: hidden;
+
+  border: 1px solid #ddd;
+
+  border-radius: 16px;
+
+  background: #fff;
+
+  box-sizing: border-box;
 }
 
-@media (width >= 600px) {
-  .category-grid-items {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+/* =========================================================
+   PRODUCT IMAGE
+   ========================================================= */
+
+.category-product-image {
+  display: block;
+
+  width: 100%;
+
+  aspect-ratio: 4 / 3;
+
+  overflow: hidden;
+
+  background: #f7f7f7;
+
+  text-decoration: none;
+}
+
+.category-product-image img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  transition: transform 0.3s ease;
+}
+
+.category-product-image:hover img {
+  transform: scale(1.03);
+}
+
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.category-product-content {
+  display: flex;
+
+  flex: 1;
+
+  flex-direction: column;
+
+  padding: 24px;
+
+  text-align: center;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   CATEGORY
+   ========================================================= */
+
+.category-product-category {
+  margin: 0 0 8px;
+
+  color: #666;
+
+  font-size: 14px;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.category-product-title {
+  margin: 0 0 14px;
+
+  color: #111;
+
+  font-size: 1.6rem;
+
+  line-height: 1.25;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   PRICE
+   ========================================================= */
+
+.category-product-price {
+  margin: 0 0 20px;
+
+  color: #111;
+
+  font-size: 1.25rem;
+
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.category-product-description {
+  margin: 0 0 24px;
+
+  color: #222;
+
+  font-size: 16px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   VIEW PRODUCT BUTTON
+   ========================================================= */
+
+.category-product-button {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+
+  min-height: 48px;
+
+  margin-top: auto;
+
+  padding: 12px 20px;
+
+  border: none;
+
+  background: #b52b2b;
+
+  color: #fff !important;
+
+  font-size: 16px;
+
+  font-weight: 600;
+
+  text-decoration: none;
+
+  box-sizing: border-box;
+}
+
+.category-product-button:hover {
+  background: #922020;
+
+  color: #fff !important;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .category-grid-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 24px;
+  }
+
+  .category-product-title {
+    font-size: 1.4rem;
+  }
+
+  .category-product-content {
+    padding: 20px;
   }
 }
 
-@media (width >= 900px) {
-  .category-grid-items {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 28px 20px;
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .category-grid {
+    margin: 32px 0;
+  }
+
+  .category-grid-heading {
+    font-size: 1.4rem;
+  }
+
+  .category-grid-list {
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+  }
+
+  .category-product-image {
+    aspect-ratio: 4 / 3;
+  }
+
+  .category-product-content {
+    padding: 20px;
+  }
+
+  .category-product-title {
+    font-size: 1.35rem;
+  }
+
+  .category-product-description {
+    font-size: 15px;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+  .category-grid-heading {
+    font-size: 1.25rem;
+  }
+
+  .category-product-content {
+    padding: 16px;
+  }
+
+  .category-product-button {
+    min-height: 44px;
+
+    font-size: 14px;
   }
 }

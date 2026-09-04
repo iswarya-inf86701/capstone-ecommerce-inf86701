@@ -33,7 +33,7 @@ export default async function decorate(block) {
    */
 
   const response = await fetch(
-    '/eds-commerce/pages/metadata.json',
+    '/metadata.json',
   );
 
   if (!response.ok) {

@@ -4,8 +4,7 @@ export default async function decorate(block) {
      ========================================================= */
 
   const isProductGrid =
-    block.classList.contains('products')
-    || block.classList.contains('featured-products');
+    block.classList.contains('products');
 
 
   /* =========================================================
@@ -109,7 +108,7 @@ export default async function decorate(block) {
      ========================================================= */
 
   const dataUrl = isProductGrid
-    ? '/eds-commerce/pages/metadata.json'
+    ? '/metadata.json'
     : '/query-index.json';
 
 
@@ -159,29 +158,12 @@ export default async function decorate(block) {
    *
    * Uses metadata.json
    *
-   * Shows products marked as highlighted.
+  * Shows every product from metadata.json.
    */
   if (isProductGrid) {
-    items = data.filter((item) => {
-      if (
-        item.template?.toLowerCase() !== 'product'
-      ) {
-        return false;
-      }
-
-      const highlighted =
-        item.Highlighted
-        ?? item.highlighted
-        ?? item.Featured
-        ?? item.featured;
-
-      return (
-        highlighted === true
-        || ['true', 'yes', '1'].includes(
-          String(highlighted).toLowerCase(),
-        )
-      );
-    });
+    items = data.filter((item) => (
+      item.template?.toLowerCase() === 'product'
+    ));
   }
 
 
@@ -509,7 +491,6 @@ export default async function decorate(block) {
 
   let autoplayTimer = null;
 
-  let isPlaying = true;
 
 
   /* =========================================================
@@ -640,10 +621,7 @@ export default async function decorate(block) {
   const startAutoplay = () => {
     stopAutoplay();
 
-    if (
-      !isPlaying
-      || slides.length <= getVisibleSlides()
-    ) {
+    if (slides.length <= getVisibleSlides()) {
       return;
     }
 
@@ -771,9 +749,7 @@ export default async function decorate(block) {
   block.addEventListener(
     'mouseleave',
     () => {
-      if (isPlaying) {
-        startAutoplay();
-      }
+      startAutoplay();
     },
   );
 
