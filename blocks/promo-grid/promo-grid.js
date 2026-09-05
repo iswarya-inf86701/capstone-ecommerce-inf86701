@@ -130,6 +130,33 @@ export default async function decorate(block) {
       ? json.data
       : [];
 
+  const productPagePath = (item) => {
+    const rawPath = String(
+      item.path
+      || item.Path
+      || item.url
+      || item.URL
+      || '',
+    ).trim();
+
+    if (!rawPath) {
+      return '#';
+    }
+
+    if (rawPath.includes('/eds-commerce/pages/products/')) {
+      return rawPath;
+    }
+
+    const slug = rawPath
+      .replace(/^https?:\/\/[^/]+/, '')
+      .replace(/^\/?(?:products\/|eds-commerce\/pages\/products\/)/, '')
+      .replace(/^\/+|\/+$/g, '');
+
+    return slug
+      ? `/eds-commerce/pages/products/${slug}`
+      : '#';
+  };
+
 
   /* =========================================================
      5. GET CATEGORIES OR PRODUCTS
@@ -238,10 +265,9 @@ export default async function decorate(block) {
       'promo-card';
 
 
-    const path =
-      item.path
-      || item.Path
-      || '#';
+    const path = isProductGrid
+      ? productPagePath(item)
+      : item.path || item.Path || '#';
 
 
     const title =
@@ -359,22 +385,22 @@ export default async function decorate(block) {
 
 
       /*
-       * ADD TO CART
+       * VIEW PRODUCT
        */
-      const cartButton =
-        document.createElement('button');
+      const productButton =
+        document.createElement('a');
 
-      cartButton.className =
+      productButton.className =
         'promo-card-cta';
 
-      cartButton.type =
-        'button';
+      productButton.href =
+        path;
 
-      cartButton.textContent =
-        'Add to Cart';
+      productButton.textContent =
+        'View product';
 
       cardContent.append(
-        cartButton,
+        productButton,
       );
     }
 
