@@ -153,6 +153,22 @@ export default async function decorate(block) {
   }
 
   const navTools = nav.querySelector('.nav-tools');
+  const accountLink = navTools && [...navTools.querySelectorAll('a')].find((link) => (
+    link.textContent.trim().toLowerCase() === 'my account'
+      || link.pathname === '/eds-commerce/pages/account'
+  ));
+
+  if (accountLink) {
+    accountLink.className = 'nav-account';
+    accountLink.setAttribute('aria-label', 'My Account');
+    accountLink.title = 'My Account';
+    accountLink.innerHTML = `
+      <img class="nav-account-icon" src="/icons/user.svg" alt="">
+      <span class="nav-account-label">My Account</span>
+    `;
+    navTools.append(accountLink);
+  }
+
   if (navTools && !navTools.querySelector('.nav-cart')) {
     const cartContainer = document.createElement('div');
     cartContainer.className = 'nav-cart-container';

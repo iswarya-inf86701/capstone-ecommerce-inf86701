@@ -1,0 +1,65 @@
+.account-orders-content {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.account-orders-title {
+  margin: 0 0 32px;
+}
+
+.account-orders-list {
+  display: grid;
+  gap: 12px;
+}
+
+.account-order {
+  border: 1px solid #ddd;
+}
+
+.account-order-summary {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 16px;
+  align-items: center;
+  padding: 18px 20px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.account-order-summary::-webkit-details-marker {
+  display: none;
+}
+
+.account-order-summary strong {
+  text-align: right;
+}
+
+.account-order-details {
+  padding: 16px 20px 20px;
+  border-top: 1px solid #eee;
+  background: #f8f8f8;
+}
+
+.account-order-details p {
+  margin: 0 0 10px;
+  font-weight: 700;
+}
+
+.account-order-details ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.account-orders-empty {
+  color: #666;
+}
+
+@media (width <= 600px) {
+  .account-order-summary {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .account-order-summary strong {
+    text-align: left;
+  }
+}

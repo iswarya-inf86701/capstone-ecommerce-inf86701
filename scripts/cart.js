@@ -94,6 +94,11 @@ export function updateQty(sku, quantity) {
   return items;
 }
 
+export function clearCart() {
+  writeItems([]);
+  return [];
+}
+
 export function getItems() {
   return readItems();
 }
@@ -117,6 +122,7 @@ export default {
   addItem,
   removeItem,
   updateQty,
+  clearCart,
   getItems,
   getTotals,
 };

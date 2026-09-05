@@ -5,33 +5,8 @@ import {
   updateQty,
 } from '../../scripts/cart.js';
 
-const fallbackCategoryPath = '/category/all';
-
 function formatPrice(price) {
   return `₹${Number(price).toFixed(2)}`;
-}
-
-function getContinueShoppingPath() {
-  try {
-    const storedPath = window.localStorage.getItem('last-category-path');
-    if (storedPath) return storedPath;
-  } catch (error) {
-    // Continue with the referrer or fallback path when storage is unavailable.
-  }
-
-  try {
-    const referrerPath = document.referrer
-      ? new URL(document.referrer).pathname
-      : '';
-
-    if (referrerPath.includes('/categories/') || referrerPath.startsWith('/category/')) {
-      return referrerPath;
-    }
-  } catch (error) {
-    // Continue with the fallback path for an invalid referrer.
-  }
-
-  return fallbackCategoryPath;
 }
 
 function createLineItem(item, onChange) {
@@ -164,7 +139,7 @@ export default function decorate(block) {
 
   const continueLink = document.createElement('a');
   continueLink.className = 'cart-continue-link';
-  continueLink.href = getContinueShoppingPath();
+  continueLink.href = '/';
   continueLink.textContent = 'Continue shopping';
 
   const checkoutLink = document.createElement('a');

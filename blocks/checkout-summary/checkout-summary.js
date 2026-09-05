@@ -1,4 +1,8 @@
-import { getItems, getTotals } from '../../scripts/cart.js';
+import {
+  clearCart,
+  getItems,
+  getTotals,
+} from '../../scripts/cart.js';
 
 function formatPrice(price) {
   return `₹${Number(price).toFixed(2)}`;
@@ -30,7 +34,7 @@ export default function decorate(block) {
         <h1>Thank you for your order</h1>
         <p>Your order has been confirmed.</p>
         <p class="checkout-summary-order-id">Order ID: ${orderId}</p>
-        <a class="checkout-summary-continue" href="/category/all">Continue shopping</a>
+        <a class="checkout-summary-continue" href="/">Continue shopping</a>
       </div>
     `;
     return;
@@ -156,6 +160,8 @@ export default function decorate(block) {
       totals,
       createdAt: new Date().toISOString(),
     });
+
+    clearCart();
 
     window.location.href = `${window.location.pathname}?status=confirmed&orderId=${orderId}`;
   });
