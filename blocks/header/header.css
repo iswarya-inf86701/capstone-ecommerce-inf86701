@@ -274,13 +274,22 @@ header nav .nav-tools {
   gap: 16px;
 }
 
+header nav .nav-cart-container {
+  position: relative;
+}
+
 header nav .nav-cart {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 32px;
   height: 32px;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  background: transparent;
   color: currentcolor;
+  cursor: pointer;
 }
 
 header nav .nav-cart img {
@@ -292,4 +301,62 @@ header nav .nav-cart img {
 header nav .nav-cart:focus-visible {
   outline: 2px solid currentcolor;
   outline-offset: 4px;
+}
+
+header nav .nav-cart-count {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  min-width: 16px;
+  min-height: 16px;
+  border-radius: 50%;
+  padding: 1px 3px;
+  background: #b52a2a;
+  color: #fff;
+  font-size: 11px;
+  line-height: 16px;
+  text-align: center;
+}
+
+header nav .nav-cart-panel {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  z-index: 10;
+  width: 260px;
+  padding: 16px;
+  border: 1px solid #ddd;
+  background: #fff;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 15%);
+  color: #111;
+}
+
+header nav .nav-cart-items {
+  margin: 0 0 12px;
+  padding: 0;
+  list-style: none;
+}
+
+header nav .nav-cart-items li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+header nav .nav-cart-subtotal {
+  margin: 0 0 12px;
+  font-weight: 700;
+}
+
+header nav .nav-cart-view {
+  display: inline-flex;
+  padding: 8px 12px;
+  background: #111;
+  color: #fff;
+}
+
+header nav .nav-cart-view:hover,
+header nav .nav-cart-view:focus-visible {
+  background: #333;
+  color: #fff;
 }

@@ -1,3 +1,9 @@
+import {
+  addItem,
+  getItems,
+  updateQty,
+} from '../../scripts/cart.js';
+
 export default async function decorate(block) {
   const path = window.location.pathname;
 
@@ -19,6 +25,12 @@ export default async function decorate(block) {
       block.innerHTML = '<p>Product not found.</p>';
       return;
     }
+
+    const productSku = product.sku || product.SKU || path;
+    const existingCartItem = getItems().find(
+      (item) => item.sku === productSku,
+    );
+    const initialQuantity = existingCartItem?.quantity || 1;
 
     const features = product.features
       ? product.features
@@ -61,12 +73,102 @@ export default async function decorate(block) {
             : ''
         }
 
-        <button class="product-details-button" type="button">
-          Add to cart
-        </button>
+        <div class="product-details-actions">
+          <div class="product-details-quantity">
+            <span id="product-quantity-label">Quantity</span>
+            <div class="product-details-quantity-control">
+              <button
+                class="product-details-quantity-button"
+                type="button"
+                aria-label="Decrease quantity">-</button>
+              <input
+                id="product-quantity"
+                type="number"
+                min="1"
+                step="1"
+                value="${initialQuantity}"
+                aria-labelledby="product-quantity-label">
+              <button
+                class="product-details-quantity-button"
+                type="button"
+                aria-label="Increase quantity">+</button>
+            </div>
+          </div>
+
+          <button class="product-details-button" type="button">
+            Add to cart
+          </button>
+        </div>
+
+        <p class="product-details-cart-status" aria-live="polite"></p>
 
       </div>
     `;
+
+    const addToCartButton = block.querySelector('.product-details-button');
+    const quantityInput = block.querySelector('#product-quantity');
+    const quantityButtons = block.querySelectorAll('.product-details-quantity-button');
+    const cartStatus = block.querySelector('.product-details-cart-status');
+
+    const syncCartQuantity = () => {
+      const cartItem = getItems().find((item) => item.sku === productSku);
+
+      if (cartItem) {
+        updateQty(productSku, quantityInput.value);
+      }
+    };
+
+    quantityButtons[0].addEventListener('click', () => {
+      const currentQuantity = Number(quantityInput.value) || 1;
+      quantityInput.value = Math.max(1, currentQuantity - 1);
+      syncCartQuantity();
+    });
+
+    quantityButtons[1].addEventListener('click', () => {
+      const currentQuantity = Number(quantityInput.value) || 1;
+      quantityInput.value = currentQuantity + 1;
+      syncCartQuantity();
+    });
+
+    quantityInput.addEventListener('change', () => {
+      quantityInput.value = Math.max(1, Math.floor(Number(quantityInput.value) || 1));
+      syncCartQuantity();
+    });
+
+    addToCartButton.addEventListener('click', () => {
+      const quantity = Math.max(1, Math.floor(Number(quantityInput.value) || 1));
+
+      quantityInput.value = quantity;
+
+      const existingCartItem = getItems().find(
+        (item) => item.sku === productSku,
+      );
+
+      if (existingCartItem) {
+        addItem({
+          sku: productSku,
+          name: product.title || product.Title || '',
+          price: product.price || product.Price || 0,
+          quantity: 1,
+          image: product.image || product.Image || '',
+        });
+      } else {
+        addItem({
+          sku: productSku,
+          name: product.title || product.Title || '',
+          price: product.price || product.Price || 0,
+          quantity,
+          image: product.image || product.Image || '',
+        });
+      }
+
+      const updatedCartItem = getItems().find(
+        (item) => item.sku === productSku,
+      );
+      quantityInput.value = updatedCartItem?.quantity || quantity;
+
+      cartStatus.textContent = 'Added to cart.';
+    });
   } catch (error) {
     console.error('Product details error:', error);
     block.innerHTML = '<p>Product not found.</p>';

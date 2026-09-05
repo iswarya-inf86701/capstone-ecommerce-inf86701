@@ -1,5 +1,6 @@
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
+import { getItems, getTotals } from '../../scripts/cart.js';
 
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
@@ -153,13 +154,88 @@ export default async function decorate(block) {
 
   const navTools = nav.querySelector('.nav-tools');
   if (navTools && !navTools.querySelector('.nav-cart')) {
-    const cartLink = document.createElement('a');
-    cartLink.className = 'nav-cart';
-    cartLink.href = '/cart';
-    cartLink.setAttribute('aria-label', 'Shopping cart');
-    cartLink.title = 'Shopping cart';
-    cartLink.innerHTML = '<img src="/icons/cart.svg" alt="">';
-    navTools.append(cartLink);
+    const cartContainer = document.createElement('div');
+    cartContainer.className = 'nav-cart-container';
+
+    const cartButton = document.createElement('button');
+    cartButton.className = 'nav-cart';
+    cartButton.type = 'button';
+    cartButton.setAttribute('aria-label', 'Shopping cart');
+    cartButton.setAttribute('aria-expanded', 'false');
+    cartButton.setAttribute('aria-controls', 'nav-cart-panel');
+    cartButton.title = 'Shopping cart';
+
+    const cartIcon = document.createElement('img');
+    cartIcon.src = '/icons/cart.svg';
+    cartIcon.alt = '';
+    cartButton.append(cartIcon);
+
+    const cartCount = document.createElement('span');
+    cartCount.className = 'nav-cart-count';
+    cartButton.append(cartCount);
+
+    const cartPanel = document.createElement('div');
+    cartPanel.className = 'nav-cart-panel';
+    cartPanel.id = 'nav-cart-panel';
+    cartPanel.hidden = true;
+
+    const cartItems = document.createElement('ul');
+    cartItems.className = 'nav-cart-items';
+    cartPanel.append(cartItems);
+
+    const cartSubtotal = document.createElement('p');
+    cartSubtotal.className = 'nav-cart-subtotal';
+    cartPanel.append(cartSubtotal);
+
+    const viewCart = document.createElement('a');
+    viewCart.href = '/cart';
+    viewCart.className = 'nav-cart-view';
+    viewCart.textContent = 'View cart';
+    cartPanel.append(viewCart);
+
+    const renderCart = () => {
+      const items = getItems();
+      const totals = getTotals();
+      cartCount.textContent = totals.itemCount;
+      cartItems.replaceChildren();
+
+      if (!items.length) {
+        const emptyItem = document.createElement('li');
+        emptyItem.textContent = 'Your cart is empty.';
+        cartItems.append(emptyItem);
+      } else {
+        items.forEach((item) => {
+          const cartItem = document.createElement('li');
+          cartItem.textContent = `${item.name || item.sku} × ${item.quantity}`;
+          cartItems.append(cartItem);
+        });
+      }
+
+      cartSubtotal.textContent = `Subtotal: ₹${totals.subtotal.toFixed(2)}`;
+    };
+
+    const setCartExpanded = (expanded) => {
+      cartButton.setAttribute('aria-expanded', String(expanded));
+      cartPanel.hidden = !expanded;
+    };
+
+    cartButton.addEventListener('click', () => {
+      renderCart();
+      setCartExpanded(cartPanel.hidden);
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!cartContainer.contains(event.target)) setCartExpanded(false);
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.code === 'Escape') setCartExpanded(false);
+    });
+    window.addEventListener('cart:updated', renderCart);
+    window.addEventListener('storage', renderCart);
+
+    cartContainer.append(cartButton, cartPanel);
+    navTools.append(cartContainer);
+    renderCart();
   }
 
   // hamburger for mobile

@@ -1,6 +1,12 @@
 export default async function decorate(block) {
   const category = block.textContent.trim().toLowerCase();
 
+  try {
+    window.localStorage.setItem('last-category-path', window.location.pathname);
+  } catch (error) {
+    // Continue without remembering the category when storage is unavailable.
+  }
+
   const response = await fetch('/query-index.json');
 
   if (!response.ok) {
