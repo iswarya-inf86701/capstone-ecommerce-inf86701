@@ -45,6 +45,10 @@ indices:
       long_description:
         select: head > meta[name="long description"]
         value: attribute(el, 'content')
+
+      specifications:
+        select: head > meta[name="specifications"]
+        value: attribute(el, 'content')
 sitemaps:
   default:
     source: /query-index.json

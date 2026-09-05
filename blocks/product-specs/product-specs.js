@@ -1,100 +1,92 @@
 export default async function decorate(block) {
   const currentPath = window.location.pathname.replace(/\/$/, '');
 
-  let product = null;
+  let metadata = null;
 
   try {
-    const response = await fetch('/query-index.json');
+    // Load the metadata.json for the current product
+    const response = await fetch(`${currentPath}/metadata.json`);
 
     if (!response.ok) {
-      throw new Error('Unable to load query-index.json');
+      throw new Error(`Unable to load metadata.json: ${response.status}`);
     }
 
-    const json = await response.json();
-
-    product = (json.data || []).find((item) => {
-      const path = (item.path || item.url || '').replace(/\/$/, '');
-
-      return path === currentPath;
-    });
+    metadata = await response.json();
   } catch (error) {
-    console.error('Unable to load product:', error);
-  }
-
-  if (!product) {
-    block.innerHTML = '<p>Product not found.</p>';
+    console.error('Unable to load product metadata:', error);
+    block.innerHTML = '<p>Unable to load product specifications.</p>';
     return;
   }
 
-  const title = product.title || '';
-  const price = product.price || '';
-  const description = product.description || '';
+  /*
+   * Expected metadata.json:
+   *
+   * {
+   *   "specifications": {
+   *     "Finish": "Matte",
+   *     "Brand": "Glam Beauty",
+   *     "Shade": "Ruby Red",
+   *     "Size": "4.2g"
+   *   }
+   * }
+   */
 
-  let features = [];
+  let specifications = metadata.specifications || {};
 
-  if (product.feature) {
-    features = product.feature
-      .split(',')
-      .map((item) => item.trim())
-      .filter(Boolean);
-  }
-
-  if (product.features) {
-    if (Array.isArray(product.features)) {
-      features = product.features;
-    } else {
-      features = product.features
-        .split(',')
-        .map((item) => item.trim())
-        .filter(Boolean);
+  // Handle specifications if they are stored as a JSON string
+  if (typeof specifications === 'string') {
+    try {
+      specifications = JSON.parse(specifications);
+    } catch (error) {
+      console.error('Invalid specifications data:', error);
+      specifications = {};
     }
   }
 
-  const featureHTML = features.length
-    ? `
-      <div class="product-features">
+  // Make sure specifications is an object
+  if (
+    typeof specifications !== 'object'
+    || Array.isArray(specifications)
+  ) {
+    specifications = {};
+  }
 
-        <h2>Key features</h2>
+  const entries = Object.entries(specifications).filter(
+    ([, value]) =>
+      value !== undefined
+      && value !== null
+      && String(value).trim() !== '',
+  );
 
-        <ul>
-          ${features
-            .map((feature) => `<li>${feature}</li>`)
-            .join('')}
-        </ul>
+  if (!entries.length) {
+    block.innerHTML = '<p>No specifications available.</p>';
+    return;
+  }
 
-      </div>
-    `
-    : '';
+  const rows = entries
+    .map(
+      ([key, value]) => `
+        <div class="product-specs-row">
+          <div class="product-specs-key">
+            ${key}
+          </div>
+          <div class="product-specs-value">
+            ${value}
+          </div>
+        </div>
+      `,
+    )
+    .join('');
 
   block.innerHTML = `
-    <div class="product-details-content">
+    <div class="product-specs">
+      <h2 class="product-specs-title">
+        Specifications
+      </h2>
 
-      <h1 class="product-details-title">
-        ${title}
-      </h1>
-
-      <p class="product-details-price">
-        ₹${price}
-      </p>
-
-      ${
-        description
-          ? `
-            <p class="product-details-description">
-              ${description}
-            </p>
-          `
-          : ''
-      }
-
-      ${featureHTML}
-
-      <button
-        type="button"
-        class="product-details-button">
-        Add to cart
-      </button>
-
+      <div class="product-specs-table">
+        ${rows}
+      </div>
     </div>
   `;
 }
