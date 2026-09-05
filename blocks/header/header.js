@@ -188,7 +188,7 @@ export default async function decorate(block) {
     cartPanel.append(cartSubtotal);
 
     const viewCart = document.createElement('a');
-    viewCart.href = '/cart';
+    viewCart.href = '/eds-commerce/pages/cart';
     viewCart.className = 'nav-cart-view';
     viewCart.textContent = 'View cart';
     cartPanel.append(viewCart);
