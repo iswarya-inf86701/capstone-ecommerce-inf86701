@@ -33,6 +33,10 @@ indices:
       highlighted:
         select: head > meta[name="highlighted"]
         value: attribute(el, 'content')
+      
+      features:
+        select: head > meta[name="features"]
+        value: attribute(el, 'content')
 sitemaps:
   default:
     source: /query-index.json
