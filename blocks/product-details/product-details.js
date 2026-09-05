@@ -34,8 +34,12 @@ export default async function decorate(block) {
           ${product.title || ''}
         </h1>
 
+        <div class="product-details-sku">
+          SKU: ${product.sku || ''}
+        </div>
+
         <div class="product-details-price">
-          ₹${product.price || ''}
+          Price: ₹${product.price || ''}
         </div>
 
         <p class="product-details-description">

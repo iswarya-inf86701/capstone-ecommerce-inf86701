@@ -72,6 +72,11 @@
   line-height: 1.5;
 }
 
+.product-details-sku {
+  margin: -8px 0 18px;
+  font-size: 14px;
+  color: #666;
+}
 
 /* =========================
    ADD TO CART
