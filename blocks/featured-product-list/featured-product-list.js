@@ -1,389 +1,407 @@
 export default async function decorate(block) {
-  /*
-   * =========================================
-   * READ AUTHORED CONTENT FROM DA.LIVE
-   *
-   * Row 1 = Title
-   * Row 2 = Description
-   * Row 3 = CTA link
-   * =========================================
-   */
+  try {
+    /*
+     * ---------------------------------------------------------
+     * READ VALUES FROM DA.LIVE AUTHORING
+     *
+     * Row 1 = Title
+     * Row 2 = Description
+     * Row 3 = CTA
+     * ---------------------------------------------------------
+     */
 
-  const rows = [...block.children];
+    const rows = [...block.children];
 
-  const title = rows[0]?.textContent.trim()
-    || 'Our best sellers';
+    const titleRow = rows[0];
+    const descriptionRow = rows[1];
+    const ctaRow = rows[2];
 
-  const description = rows[1]?.textContent.trim()
-    || '';
+    const blockTitle =
+      titleRow?.textContent.trim()
+      || 'Best Sellers';
 
-  const ctaElement = rows[2]?.querySelector('a');
+    const blockDescription =
+      descriptionRow?.textContent.trim()
+      || '';
 
-  const ctaText = ctaElement?.textContent.trim()
-    || 'Shop now';
+    /*
+     * CTA can be authored as a link.
+     */
 
-  const ctaHref = ctaElement?.href
-    || '/products';
+    const ctaLink =
+      ctaRow?.querySelector('a');
 
+    const shopNowText =
+      ctaLink?.textContent.trim()
+      || ctaRow?.textContent.trim()
+      || 'Shop now';
 
-  /*
-   * =========================================
-   * FETCH PRODUCT METADATA
-   * =========================================
-   */
+    const shopNowLink =
+      ctaLink?.href
+      || '/products';
 
-  const response = await fetch(
-    '/metadata.json',
-  );
+    /*
+     * ---------------------------------------------------------
+     * GET PRODUCTS FROM QUERY INDEX
+     * ---------------------------------------------------------
+     */
 
-  if (!response.ok) {
-    throw new Error(
-      `Unable to load product metadata: ${response.status}`,
+    const response =
+      await fetch('/query-index.json');
+
+    if (!response.ok) {
+      throw new Error(
+        `Product index request failed: ${response.status}`,
+      );
+    }
+
+    const json =
+      await response.json();
+
+    /*
+     * Only get product pages.
+     */
+
+    const products =
+      Array.isArray(json.data)
+        ? json.data.filter(
+            (product) =>
+              (
+                product.template
+                || product.Template
+                || ''
+              ).toLowerCase() === 'product',
+          )
+        : [];
+
+    /*
+     * ---------------------------------------------------------
+     * GET FEATURED PRODUCTS
+     * ---------------------------------------------------------
+     */
+
+    const featuredProducts =
+      products.filter((product) => {
+        const highlighted =
+          product.highlighted
+          ?? product.Highlighted
+          ?? product.featured
+          ?? product.Featured
+          ?? '';
+
+        return (
+          String(highlighted).toLowerCase() === 'true'
+          || String(highlighted).toLowerCase() === 'yes'
+          || String(highlighted) === '1'
+        );
+      });
+
+    /*
+     * If highlighted products exist, use them.
+     * Otherwise use the first products.
+     */
+
+    const productsToDisplay = (
+      featuredProducts.length
+        ? featuredProducts
+        : products
+    ).slice(0, 6);
+
+    /*
+     * ---------------------------------------------------------
+     * MAIN CONTAINER
+     * ---------------------------------------------------------
+     */
+
+    const container =
+      document.createElement('div');
+
+    container.className =
+      'featured-product-list-container';
+
+    /*
+     * ---------------------------------------------------------
+     * LEFT INTRO SECTION
+     * ---------------------------------------------------------
+     */
+
+    const intro =
+      document.createElement('div');
+
+    intro.className =
+      'featured-product-list-intro';
+
+    /*
+     * TITLE
+     */
+
+    const heading =
+      document.createElement('h2');
+
+    heading.textContent =
+      blockTitle;
+
+    /*
+     * DESCRIPTION
+     */
+
+    const description =
+      document.createElement('p');
+
+    description.className =
+      'featured-product-list-description';
+
+    description.textContent =
+      blockDescription;
+
+    /*
+     * SHOP NOW / SHOP ALL
+     */
+
+    const shopNow =
+      document.createElement('a');
+
+    shopNow.className =
+      'featured-product-list-shop';
+
+    shopNow.href =
+      shopNowLink;
+
+    shopNow.textContent =
+      shopNowText;
+
+    /*
+     * Add all three authored values.
+     */
+
+    intro.append(
+      heading,
+      description,
+      shopNow,
     );
-  }
 
-  const json = await response.json();
+    /*
+     * ---------------------------------------------------------
+     * PRODUCT GRID
+     * ---------------------------------------------------------
+     */
 
+    const grid =
+      document.createElement('div');
 
-  /*
-   * =========================================
-   * GET ONLY PRODUCT PAGES
-   * =========================================
-   */
+    grid.className =
+      'featured-product-list-grid';
 
-  const products = Array.isArray(json.data)
-    ? json.data.filter(
-      (item) => item.template?.toLowerCase() === 'product',
-    )
-    : [];
+    /*
+     * ---------------------------------------------------------
+     * CREATE PRODUCT CARDS
+     * ---------------------------------------------------------
+     */
 
+    productsToDisplay.forEach((product) => {
+      /*
+       * Product values from query-index.json
+       */
 
-  /*
-   * =========================================
-   * GET ONLY HIGHLIGHTED PRODUCTS
-   * =========================================
-   */
+      const productTitle =
+        product.title
+        || product.Title
+        || 'Product';
 
-  const highlightedProducts = products.filter((item) => {
-    const flag = item.Highlighted
-      || item.highlighted
-      || item.Featured
-      || item.featured;
+      const productCategory =
+        product.category
+        || product.Category
+        || '';
 
-    return (
-      ['true', 'yes', '1'].includes(
-        String(flag).toLowerCase(),
-      )
-      || flag === true
+      const productPrice =
+        product.price
+        || product.Price
+        || '';
+
+      const productImage =
+        product.image
+        || product.Image
+        || '';
+
+      const productPath =
+        product.path
+        || product.Path
+        || '#';
+
+      /*
+       * -------------------------------------------------------
+       * CARD
+       * -------------------------------------------------------
+       */
+
+      const productCard =
+        document.createElement('article');
+
+      productCard.className =
+        'product-card';
+
+      /*
+       * -------------------------------------------------------
+       * IMAGE
+       * -------------------------------------------------------
+       */
+
+      const imageLink =
+        document.createElement('a');
+
+      imageLink.className =
+        'product-card-image';
+
+      imageLink.href =
+        productPath;
+
+      if (productImage) {
+        const image =
+          document.createElement('img');
+
+        image.src =
+          productImage;
+
+        image.alt =
+          productTitle;
+
+        image.loading =
+          'lazy';
+
+        imageLink.appendChild(
+          image,
+        );
+      }
+
+      /*
+       * -------------------------------------------------------
+       * PRODUCT INFORMATION
+       * -------------------------------------------------------
+       */
+
+      const info =
+        document.createElement('div');
+
+      info.className =
+        'product-card-info';
+
+      /*
+       * TITLE
+       */
+
+      const title =
+        document.createElement('h3');
+
+      title.textContent =
+        productTitle;
+
+      /*
+       * CATEGORY
+       */
+
+      const category =
+        document.createElement('p');
+
+      category.className =
+        'product-category';
+
+      category.textContent =
+        productCategory;
+
+      /*
+       * PRICE
+       */
+
+      const price =
+        document.createElement('p');
+
+      price.className =
+        'product-price';
+
+      if (productPrice) {
+        price.textContent =
+          `₹${productPrice}`;
+      }
+
+      /*
+       * -------------------------------------------------------
+       * VIEW PRODUCT BUTTON
+       * -------------------------------------------------------
+       */
+
+      const productButton =
+        document.createElement('a');
+
+      productButton.className =
+        'product-view-button';
+
+      productButton.href =
+        productPath;
+
+      productButton.textContent =
+        'View product';
+
+      /*
+       * -------------------------------------------------------
+       * PRODUCT CONTENT
+       *
+       * NO RATING
+       * NO REVIEWS
+       * NO STOCK
+       * -------------------------------------------------------
+       */
+
+      info.append(
+        title,
+        category,
+        price,
+        productButton,
+      );
+
+      /*
+       * -------------------------------------------------------
+       * ADD CARD TO GRID
+       * -------------------------------------------------------
+       */
+
+      productCard.append(
+        imageLink,
+        info,
+      );
+
+      grid.appendChild(
+        productCard,
+      );
+    });
+
+    /*
+     * ---------------------------------------------------------
+     * ADD INTRO + GRID
+     * ---------------------------------------------------------
+     */
+
+    container.append(
+      intro,
+      grid,
     );
-  });
-
-
-  /*
-   * =========================================
-   * BEST SELLERS
-   *
-   * ONLY highlighted products.
-   * NO fallback products.
-   *
-   * Maximum 6 products.
-   * =========================================
-   */
-
-  const bestSellers = highlightedProducts.slice(0, 6);
-
-
-  /*
-   * =========================================
-   * IF NO HIGHLIGHTED PRODUCTS
-   * =========================================
-   */
-
-  if (!bestSellers.length) {
-    block.innerHTML = '';
-
-    const message = document.createElement('p');
-
-    message.textContent = 'No best-selling products available.';
-
-    block.append(message);
-
-    return;
-  }
-
-
-  /*
-   * =========================================
-   * CLEAR AUTHORED BLOCK
-   * =========================================
-   */
-
-  block.innerHTML = '';
-
-
-  /*
-   * =========================================
-   * MAIN CONTAINER
-   * =========================================
-   */
-
-  const container = document.createElement('div');
-
-  container.className = 'featured-product-list-container';
-
-
-  /*
-   * =========================================
-   * LEFT SIDE - INTRO
-   * =========================================
-   */
-
-  const intro = document.createElement('div');
-
-  intro.className = 'featured-product-list-intro';
-
-
-  /*
-   * TITLE
-   */
-
-  const heading = document.createElement('h2');
-
-  heading.textContent = title;
-
-
-  /*
-   * DESCRIPTION
-   */
-
-  const descriptionElement = document.createElement('p');
-
-  descriptionElement.textContent = description;
-
-
-  /*
-   * CTA
-   */
-
-  const shopLink = document.createElement('a');
-
-  shopLink.className = 'featured-product-list-shop';
-
-  shopLink.href = ctaHref;
-
-  shopLink.textContent = ctaText;
-
-
-  /*
-   * Add intro content
-   */
-
-  intro.append(
-    heading,
-    descriptionElement,
-    shopLink,
-  );
-
-
-  /*
-   * =========================================
-   * RIGHT SIDE - PRODUCT GRID
-   * =========================================
-   */
-
-  const productGrid = document.createElement('div');
-
-  productGrid.className = 'featured-product-list-grid';
-
-
-  /*
-   * =========================================
-   * CREATE PRODUCT CARDS
-   * =========================================
-   */
-
-  bestSellers.forEach((product) => {
-    /*
-     * Card
-     */
-
-    const card = document.createElement('article');
-
-    card.className = 'product-card';
-
 
     /*
-     * Product link / image
+     * Replace authored content with rendered block.
      */
 
-    const imageLink = document.createElement('a');
+    block.replaceChildren(
+      container,
+    );
+  } catch (error) {
+    console.error(
+      'Unable to load featured products:',
+      error,
+    );
 
-    imageLink.className = 'product-card-image';
-
-    imageLink.href =
-      product.Path
-      || product.path
-      || '#';
-
-
-    /*
-     * Image
-     */
-
-    const image = document.createElement('img');
-
-    image.src =
-      product.Image
-      || product.image
-      || '';
-
-    image.alt =
-      product.Title
-      || product.title
-      || '';
-
-
-    imageLink.append(image);
-
-
-    /*
-     * Product information
-     */
-
-    const info = document.createElement('div');
-
-    info.className = 'product-card-info';
-
-
-    /*
-     * Product title
-     */
-
-    const productTitle = document.createElement('h3');
-
-    productTitle.textContent =
-      product.Title
-      || product.title
-      || '';
-
-
-    /*
-     * Category
-     */
-
-    const category = document.createElement('p');
-
-    category.className = 'product-category';
-
-    category.textContent =
-      product.Category
-      || product.category
-      || '';
-
-
-    /*
-     * Price
-     */
-
-    const price = document.createElement('p');
-
-    price.className = 'product-price';
-
-    price.textContent =
-      `₹${product.Price || product.price || ''}`;
-
-
-    /*
-     * Rating
-     */
-
-    const rating = document.createElement('div');
-
-    rating.className = 'product-rating';
-
-    rating.innerHTML = `
-      <span class="stars">★★★★★</span>
-      <span class="rating-value">4.5</span>
-      <span class="reviews">28 reviews</span>
+    block.innerHTML = `
+      <p class="featured-product-list-error">
+        Unable to load products.
+      </p>
     `;
-
-
-    /*
-     * Stock
-     */
-
-    const stock = document.createElement('p');
-
-    stock.className = 'product-stock';
-
-    stock.textContent = '2 left in stock';
-
-
-    /*
-     * Add to cart
-     */
-
-    const cartButton = document.createElement('a');
-
-    cartButton.className = 'product-cart-button';
-
-    cartButton.href =
-      product.Path
-      || product.path
-      || '#';
-
-    cartButton.textContent = 'Add to cart';
-
-
-    /*
-     * Put product information together
-     */
-
-    info.append(
-      productTitle,
-      category,
-      price,
-      rating,
-      stock,
-      cartButton,
-    );
-
-
-    /*
-     * Put card together
-     */
-
-    card.append(
-      imageLink,
-      info,
-    );
-
-
-    /*
-     * Add card to grid
-     */
-
-    productGrid.append(card);
-  });
-
-
-  /*
-   * =========================================
-   * ADD EVERYTHING TO MAIN CONTAINER
-   * =========================================
-   */
-
-  container.append(
-    intro,
-    productGrid,
-  );
-
-
-  /*
-   * =========================================
-   * ADD CONTAINER TO BLOCK
-   * =========================================
-   */
-
-  block.append(container);
+  }
 }
