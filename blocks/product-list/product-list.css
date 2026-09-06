@@ -15,6 +15,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 24px;
+  align-items: stretch;
 }
 
 .product-list-card {
@@ -28,9 +29,10 @@
 }
 
 .product-list-image {
+  flex: 0 0 220px;
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: 220px;
   background: #f5f5f5;
 }
 
@@ -56,6 +58,7 @@
 
 .product-list-content h2 {
   font-size: 1.1rem;
+  min-height: 2.75em;
 }
 
 .product-list-category {
@@ -65,8 +68,13 @@
 }
 
 .product-list-description {
+  display: -webkit-box;
+  min-height: 4.5em;
+  overflow: hidden;
   color: #666;
   line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
 
 .product-list-price {
@@ -104,10 +112,20 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
   }
+
+  .product-list-image {
+    flex-basis: 190px;
+    height: 190px;
+  }
 }
 
 @media (width <= 480px) {
   .product-list-grid {
     grid-template-columns: 1fr;
+  }
+
+  .product-list-image {
+    flex-basis: 220px;
+    height: 220px;
   }
 }

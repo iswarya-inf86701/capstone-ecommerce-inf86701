@@ -42,7 +42,20 @@ function renderProduct(product) {
   `;
 }
 
+function isHighlighted(product) {
+  const highlighted = value(product, 'highlighted', 'Highlighted', 'featured', 'Featured');
+  return ['true', 'yes', '1'].includes(String(highlighted).toLowerCase()) || highlighted === true;
+}
+
 export default async function decorate(block) {
+  const mode = block.textContent.trim().toLowerCase();
+  const params = new URLSearchParams(window.location.search);
+  const showHighlightedOnly =
+    block.classList.contains('highlighted')
+    || block.classList.contains('featured')
+    || /\b(highlighted|featured)\b/.test(mode)
+    || ['highlighted', 'featured'].includes(params.get('filter'));
+
   try {
     const response = await fetch('/metadata.json');
 
@@ -51,9 +64,13 @@ export default async function decorate(block) {
     }
 
     const json = await response.json();
-    const products = Array.isArray(json.data)
+    let products = Array.isArray(json.data)
       ? json.data.filter((product) => value(product, 'template', 'Template').toLowerCase() === 'product')
       : [];
+
+    if (showHighlightedOnly) {
+      products = products.filter(isHighlighted);
+    }
 
     if (!products.length) {
       block.innerHTML = '<p>No products available.</p>';
@@ -62,7 +79,7 @@ export default async function decorate(block) {
 
     block.innerHTML = `
       <div class="product-list-content-wrapper">
-        <h1>Products</h1>
+        <h1>${showHighlightedOnly ? 'Featured Products' : 'Products'}</h1>
         <div class="product-list-grid">
           ${products.map(renderProduct).join('')}
         </div>

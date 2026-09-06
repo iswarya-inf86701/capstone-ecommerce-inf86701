@@ -6,6 +6,9 @@ export default async function decorate(block) {
   const isProductGrid =
     block.classList.contains('products');
 
+  const isCategoryListPage =
+    window.location.pathname.replace(/\/$/, '') === '/eds-commerce/pages/categories/category-list';
+
 
   /* =========================================================
      2. READ DA.LIVE AUTHORING
@@ -34,7 +37,10 @@ export default async function decorate(block) {
 
   let headingText = '';
   let shopText = 'Shop Now';
-  let shopHref = '#';
+  let shopHref = isProductGrid
+    ? '#'
+    : '/eds-commerce/pages/categories/category-list';
+  let hasAuthoredCta = false;
 
   /*
    * Read the first authored row.
@@ -58,6 +64,8 @@ export default async function decorate(block) {
       const link = cells[1].querySelector('a');
 
       if (link) {
+        hasAuthoredCta = true;
+
         shopText =
           link.textContent.trim() || 'Shop Now';
 
@@ -72,6 +80,8 @@ export default async function decorate(block) {
           cells[1].textContent.trim();
 
         if (cellText) {
+          hasAuthoredCta = true;
+
           shopText = cellText;
         }
       }
@@ -227,19 +237,21 @@ export default async function decorate(block) {
   /*
    * AUTHORED CTA
    */
-  const shopButton =
-    document.createElement('a');
+  if (hasAuthoredCta && (isProductGrid || !isCategoryListPage)) {
+    const shopButton =
+      document.createElement('a');
 
-  shopButton.className =
-    'promo-grid-shop';
+    shopButton.className =
+      'promo-grid-shop';
 
-  shopButton.href =
-    shopHref;
+    shopButton.href =
+      shopHref;
 
-  shopButton.textContent =
-    shopText;
+    shopButton.textContent =
+      shopText;
 
-  header.append(shopButton);
+    header.append(shopButton);
+  }
 
 
   /* =========================================================
