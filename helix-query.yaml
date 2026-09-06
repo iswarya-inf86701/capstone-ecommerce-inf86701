@@ -41,10 +41,6 @@ indices:
       sku:
         select: head > meta[name="sku"]
         value: attribute(el, 'content') 
-        
-      long_description:
-        select: head > meta[name="long description"]
-        value: attribute(el, 'content')
 
       specifications:
         select: head > meta[name="specifications"]
