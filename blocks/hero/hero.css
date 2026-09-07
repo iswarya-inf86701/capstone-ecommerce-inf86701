@@ -5,6 +5,8 @@
 
 .hero {
   position: relative;
+  max-width: 1600px;
+  margin-inline: auto;
   padding: 40px 24px;
   min-height: 300px;
 }
@@ -88,10 +90,17 @@
 }
 
 .hero.slideshow > div:nth-child(2) {
-  max-width: 600px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 20vh auto 0;
   padding: 2rem;
-  margin-top: 20vh;
+  box-sizing: border-box;
   color: #fff;
+}
+
+.hero.slideshow h1,
+.hero.slideshow p {
+  max-width: 600px;
 }
 
 .hero.slideshow h1 {

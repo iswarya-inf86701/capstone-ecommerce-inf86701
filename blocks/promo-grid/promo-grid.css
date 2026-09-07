@@ -3,16 +3,19 @@
    FULL WIDTH + RESPONSIVE
    ========================================================= */
 
+/* Full bleed via the section wrapper so no vw unit can overflow past the scrollbar */
+main > .section > .promo-grid-wrapper {
+  max-width: none;
+  padding: 0;
+}
+
 .promo-grid {
   position: relative;
-
-  /* Break out of the EDS content width */
-  width: 100vw;
-  max-width: 100vw;
-  left: 50%;
-  margin-left: -50vw;
+  width: 100%;
+  max-width: 1600px;
   margin-top: 48px;
   margin-bottom: 48px;
+  margin-inline: auto;
   padding: 0;
   box-sizing: border-box;
 }
