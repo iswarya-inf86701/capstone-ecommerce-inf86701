@@ -56,10 +56,10 @@ export default async function decorate(block) {
     || ['highlighted', 'featured'].includes(params.get('filter'));
 
   try {
-    const response = await fetch('/metadata.json');
+    const response = await fetch('/query-index.json');
 
     if (!response.ok) {
-      throw new Error(`Unable to load metadata.json: ${response.status}`);
+      throw new Error(`Unable to load query-index.json: ${response.status}`);
     }
 
     const json = await response.json();

@@ -222,7 +222,17 @@ export default async function decorate(block) {
       } else {
         items.forEach((item) => {
           const cartItem = document.createElement('li');
-          cartItem.textContent = `${item.name || item.sku} × ${item.quantity}`;
+
+          if (item.image) {
+            const itemImage = document.createElement('img');
+            itemImage.className = 'nav-cart-item-image';
+            itemImage.src = item.image;
+            itemImage.alt = '';
+            itemImage.loading = 'lazy';
+            cartItem.append(itemImage);
+          }
+
+          cartItem.append(`${item.name || item.sku} × ${item.quantity}`);
           cartItems.append(cartItem);
         });
       }

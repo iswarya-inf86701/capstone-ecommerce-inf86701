@@ -371,9 +371,20 @@ header nav .nav-cart-items {
 }
 
 header nav .nav-tools .nav-cart-items li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   padding: 8px 0;
   border-bottom: 1px solid #eee;
   font-size: 14px;
+}
+
+header nav .nav-cart-item-image {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  border: 1px solid #eee;
+  object-fit: cover;
 }
 
 header nav .nav-cart-subtotal {
