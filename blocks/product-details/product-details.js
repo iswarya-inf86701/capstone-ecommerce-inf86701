@@ -30,7 +30,7 @@ export default async function decorate(block) {
     const existingCartItem = getItems().find(
       (item) => item.sku === productSku,
     );
-    const initialQuantity = existingCartItem?.quantity || 1;
+    const initialQuantity = existingCartItem?.quantity || 0;
 
     const features = product.features
       ? product.features
@@ -84,7 +84,7 @@ export default async function decorate(block) {
               <input
                 id="product-quantity"
                 type="number"
-                min="1"
+                min="0"
                 step="1"
                 value="${initialQuantity}"
                 aria-labelledby="product-quantity-label">
@@ -118,20 +118,21 @@ export default async function decorate(block) {
       }
     };
 
+    // Number('0') is falsy, so the fallback must be 0 to keep the stepper stable at zero.
+    const readQuantity = () => Math.max(0, Math.floor(Number(quantityInput.value) || 0));
+
     quantityButtons[0].addEventListener('click', () => {
-      const currentQuantity = Number(quantityInput.value) || 1;
-      quantityInput.value = Math.max(1, currentQuantity - 1);
+      quantityInput.value = Math.max(0, readQuantity() - 1);
       syncCartQuantity();
     });
 
     quantityButtons[1].addEventListener('click', () => {
-      const currentQuantity = Number(quantityInput.value) || 1;
-      quantityInput.value = currentQuantity + 1;
+      quantityInput.value = readQuantity() + 1;
       syncCartQuantity();
     });
 
     quantityInput.addEventListener('change', () => {
-      quantityInput.value = Math.max(1, Math.floor(Number(quantityInput.value) || 1));
+      quantityInput.value = readQuantity();
       syncCartQuantity();
     });
 
