@@ -27,10 +27,8 @@
   display: grid !important;
   grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
   gap: 24px;
-
   width: 100% !important;
   max-width: 1200px !important;
-
   box-sizing: border-box;
 }
 
@@ -42,18 +40,13 @@
 .related-products-card {
   display: flex;
   flex-direction: column;
-
   width: 100% !important;
   min-width: 0;
   height: 100%;
-
   overflow: hidden;
-
   box-sizing: border-box;
-
   border: 1px solid #dadada;
   border-radius: 8px;
-
   background: var(--background-color);
 }
 
@@ -64,21 +57,16 @@
 
 .related-products-image {
   display: block;
-
   width: 100%;
   height: 220px;
-
   overflow: hidden;
-
   background: #f5f5f5;
 }
 
 .related-products-image img {
   display: block;
-
   width: 100%;
   height: 100%;
-
   object-fit: contain;
 }
 
@@ -90,19 +78,14 @@
 .related-products-content {
   display: flex;
   flex-direction: column;
-
   flex: 1;
-
   gap: 8px;
-
   padding: 16px;
-
   box-sizing: border-box;
 }
 
 .related-products-content h3 {
   margin: 0;
-
   font-size: 18px;
   line-height: 1.3;
   font-weight: 700;
@@ -110,7 +93,6 @@
 
 .related-products-price {
   margin: 0;
-
   font-size: 17px;
   font-weight: 700;
   color: #333;
@@ -127,33 +109,22 @@
 .related-products-link:hover,
 .related-products-link:active {
   display: inline-flex !important;
-
   align-items: center !important;
   justify-content: center !important;
-
   align-self: flex-start !important;
-
   margin-top: auto !important;
-
   min-width: 170px !important;
   height: 48px !important;
-
   padding: 0 28px !important;
-
   border: 0 !important;
   border-radius: 6px !important;
-
   background: #b52828 !important;
   color: #fff !important;
-
   font-size: 16px !important;
   font-weight: 700 !important;
   line-height: 1 !important;
-
   text-decoration: none !important;
-
   cursor: pointer !important;
-
   box-sizing: border-box !important;
 }
 
@@ -190,10 +161,8 @@ main .section:has(.related-products) {
 
 main .section:has(.related-products) .related-products {
   display: block !important;
-
   width: min(1200px, 100%) !important;
   max-width: 1200px !important;
-
   margin-left: auto !important;
   margin-right: auto !important;
 }
@@ -203,8 +172,7 @@ main .section:has(.related-products) .related-products {
    TABLET
    ========================================================= */
 
-@media (max-width: 900px) {
-
+@media (width <= 900px) {
   .related-products {
     width: 100%;
     max-width: 100%;
@@ -220,8 +188,7 @@ main .section:has(.related-products) .related-products {
    MOBILE
    ========================================================= */
 
-@media (max-width: 480px) {
-
+@media (width <= 480px) {
   .related-products-container {
     grid-template-columns: 1fr !important;
   }

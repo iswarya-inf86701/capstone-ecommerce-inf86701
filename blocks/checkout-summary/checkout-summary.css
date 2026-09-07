@@ -104,6 +104,11 @@
 .checkout-summary-place-order,
 .checkout-summary-continue {
   display: inline-flex;
+
+.checkout-summary-continue {
+  width: auto;
+}
+
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -163,10 +168,6 @@
 .checkout-summary-order-id {
   margin: 24px 0;
   font-weight: 700;
-}
-
-.checkout-summary-continue {
-  width: auto;
 }
 
 @media (width <= 768px) {

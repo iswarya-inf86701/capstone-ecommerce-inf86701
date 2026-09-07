@@ -17,7 +17,7 @@ function parseSpecifications(value) {
       return Object.entries(parsed);
     }
   } catch (error) {
-    // Live metadata may use unquoted keys and values.
+    /* fall back to comma-separated metadata */
   }
 
   return text
@@ -77,8 +77,7 @@ export default async function decorate(block) {
 
     table.append(tbody);
     block.replaceChildren(heading, table);
-  } catch (error) {
-    console.error('Unable to load product specifications:', error);
+  } catch {
     block.innerHTML = '<p>Unable to load product specifications.</p>';
   }
 }

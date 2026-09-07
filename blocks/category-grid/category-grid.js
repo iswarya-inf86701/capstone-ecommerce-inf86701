@@ -4,7 +4,7 @@ export default async function decorate(block) {
   try {
     window.localStorage.setItem('last-category-path', window.location.pathname);
   } catch (error) {
-    // Continue without remembering the category when storage is unavailable.
+    /* continue without remembering category */
   }
 
   const response = await fetch('/query-index.json');
@@ -16,10 +16,8 @@ export default async function decorate(block) {
 
   const json = await response.json();
 
-  const products = (json.data || []).filter((item) =>
-    item.template?.toLowerCase() === 'product'
-      && item.category?.toLowerCase() === category,
-  );
+  const products = (json.data || []).filter((item) => item.template?.toLowerCase() === 'product'
+      && item.category?.toLowerCase() === category);
 
   if (!products.length) {
     block.innerHTML = `

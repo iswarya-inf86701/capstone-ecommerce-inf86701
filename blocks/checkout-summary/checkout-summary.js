@@ -20,7 +20,7 @@ function saveOrder(order) {
     updatedOrders.push(order);
     window.localStorage.setItem('capstone-commerce-orders', JSON.stringify(updatedOrders));
   } catch (error) {
-    // Order history is optional when storage is unavailable.
+    /* order history is optional */
   }
 }
 

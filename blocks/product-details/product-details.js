@@ -18,7 +18,7 @@ export default async function decorate(block) {
     const json = await response.json();
 
     const product = json.data?.find(
-      (item) => item.path === path
+      (item) => item.path === path,
     );
 
     if (!product) {
@@ -34,9 +34,9 @@ export default async function decorate(block) {
 
     const features = product.features
       ? product.features
-          .split(',')
-          .map((feature) => feature.trim())
-          .filter(Boolean)
+        .split(',')
+        .map((feature) => feature.trim())
+        .filter(Boolean)
       : [];
 
     block.innerHTML = `
@@ -59,19 +59,19 @@ export default async function decorate(block) {
         </p>
 
         ${
-          features.length
-            ? `
+  features.length
+    ? `
               <div class="product-details-features">
                 <h2>Key features</h2>
                 <ul>
                   ${features
-                    .map((feature) => `<li>${feature}</li>`)
-                    .join('')}
+    .map((feature) => `<li>${feature}</li>`)
+    .join('')}
                 </ul>
               </div>
             `
-            : ''
-        }
+    : ''
+}
 
         <div class="product-details-actions">
           <div class="product-details-quantity">
@@ -140,11 +140,11 @@ export default async function decorate(block) {
 
       quantityInput.value = quantity;
 
-      const existingCartItem = getItems().find(
+      const currentCartItem = getItems().find(
         (item) => item.sku === productSku,
       );
 
-      if (existingCartItem) {
+      if (currentCartItem) {
         addItem({
           sku: productSku,
           name: product.title || product.Title || '',
@@ -169,8 +169,7 @@ export default async function decorate(block) {
 
       cartStatus.textContent = 'Added to cart.';
     });
-  } catch (error) {
-    console.error('Product details error:', error);
+  } catch {
     block.innerHTML = '<p>Product not found.</p>';
   }
 }

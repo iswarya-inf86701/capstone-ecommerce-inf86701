@@ -37,7 +37,7 @@
   }
 }
 
-/* for hero slide show*/
+/* for hero slide show */
 .hero.slideshow {
   position: relative;
   min-height: 70vh;
@@ -140,7 +140,7 @@
 .hero-line {
   width: 40px;
   height: 3px;
-  background: rgba(255,255,255,.4);
+  background: rgb(255 255 255 / 40%);
   border-radius: 20px;
   transition: all .3s ease;
 }
@@ -152,7 +152,7 @@
 
 /* Desktop */
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
   .hero.slideshow {
     min-height: 85vh;
   }

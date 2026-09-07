@@ -50,8 +50,7 @@ function isHighlighted(product) {
 export default async function decorate(block) {
   const mode = block.textContent.trim().toLowerCase();
   const params = new URLSearchParams(window.location.search);
-  const showHighlightedOnly =
-    block.classList.contains('highlighted')
+  const showHighlightedOnly = block.classList.contains('highlighted')
     || block.classList.contains('featured')
     || /\b(highlighted|featured)\b/.test(mode)
     || ['highlighted', 'featured'].includes(params.get('filter'));
@@ -85,8 +84,7 @@ export default async function decorate(block) {
         </div>
       </div>
     `;
-  } catch (error) {
-    console.error('Unable to load product list:', error);
+  } catch {
     block.innerHTML = '<p>Unable to load products.</p>';
   }
 }

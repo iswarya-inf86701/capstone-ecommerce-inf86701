@@ -36,7 +36,7 @@
   background: #fff;
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .product-specs {
     margin: 40px 0;
   }

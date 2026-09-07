@@ -1,12 +1,6 @@
 export default function decorate(block) {
   const rows = [...block.children];
 
-  // Expected authoring:
-  // Row 1: Image
-  // Row 2: Title
-  // Row 3: Description
-  // Row 4: CTA
-
   const image = rows[0]?.querySelector('img');
   const title = rows[1]?.textContent.trim() || '';
   const description = rows[2]?.textContent.trim() || '';

@@ -55,8 +55,6 @@ export default async function decorate(block) {
     const items = await getIndexedItems(block);
     renderIndexedItems(block, items);
   }
-
-  // Remove empty rows created in EDS
   [...block.children].forEach((slide) => {
     const hasContent = slide.textContent.trim()
       || slide.querySelector('img, picture, a');
@@ -90,30 +88,18 @@ export default async function decorate(block) {
   });
 
   block.append(track);
-
-  /*
-   * Previous button
-   */
   const previousButton = document.createElement('button');
 
   previousButton.className = 'carousel-previous';
   previousButton.type = 'button';
   previousButton.setAttribute('aria-label', 'Previous slide');
   previousButton.innerHTML = '&#10094;';
-
-  /*
-   * Next button
-   */
   const nextButton = document.createElement('button');
 
   nextButton.className = 'carousel-next';
   nextButton.type = 'button';
   nextButton.setAttribute('aria-label', 'Next slide');
   nextButton.innerHTML = '&#10095;';
-
-  /*
-   * Dots
-   */
   const dots = document.createElement('div');
 
   dots.className = 'carousel-dots';
@@ -121,10 +107,6 @@ export default async function decorate(block) {
   dots.setAttribute('aria-label', 'Carousel navigation');
 
   block.append(previousButton, nextButton, dots);
-
-  /*
-   * Number of visible slides
-   */
   function getVisibleSlides() {
     if (window.innerWidth >= 1024) {
       return 4;
@@ -136,20 +118,80 @@ export default async function decorate(block) {
 
     return 1;
   }
-
-  /*
-   * Maximum carousel position
-   */
   function getMaxIndex() {
     return Math.max(
       0,
       slides.length - getVisibleSlides(),
     );
   }
+  function updateCarousel() {
+    const visibleSlides = getVisibleSlides();
 
-  /*
-   * Create dots dynamically
-   */
+    const slideWidth = 100 / visibleSlides;
+
+    slides.forEach((slide) => {
+      slide.style.flex = `0 0 ${slideWidth}%`;
+    });
+
+    track.style.transform = `translateX(-${currentIndex * slideWidth}%)`;
+    [...dots.children].forEach((dot, index) => {
+      dot.classList.toggle(
+        'active',
+        index === currentIndex,
+      );
+    });
+  }
+  function nextSlide() {
+    const maxIndex = getMaxIndex();
+
+    currentIndex += 1;
+
+    if (currentIndex > maxIndex) {
+      currentIndex = 0;
+    }
+
+    updateCarousel();
+  }
+  function previousSlide() {
+    const maxIndex = getMaxIndex();
+
+    currentIndex -= 1;
+
+    if (currentIndex < 0) {
+      currentIndex = maxIndex;
+    }
+
+    updateCarousel();
+  }
+
+  function stopAutoplay() {
+    if (autoplayTimer) {
+      clearInterval(autoplayTimer);
+      autoplayTimer = null;
+    }
+  }
+
+  function startAutoplay() {
+    stopAutoplay();
+    if (slides.length <= getVisibleSlides()) {
+      return;
+    }
+
+    autoplayTimer = setInterval(() => {
+      nextSlide();
+    }, 5000);
+  }
+
+  function restartAutoplay() {
+    stopAutoplay();
+    startAutoplay();
+  }
+
+  function goToSlide(index) {
+    currentIndex = index;
+    updateCarousel();
+    restartAutoplay();
+  }
   function createDots() {
     dots.innerHTML = '';
 
@@ -166,76 +208,11 @@ export default async function decorate(block) {
         `Go to position ${i + 1}`,
       );
 
-      dot.addEventListener('click', () => {
-        currentIndex = i;
-
-        updateCarousel();
-        restartAutoplay();
-      });
+      dot.addEventListener('click', goToSlide.bind(null, i));
 
       dots.append(dot);
     }
   }
-
-  /*
-   * Update carousel position
-   */
-  function updateCarousel() {
-    const visibleSlides = getVisibleSlides();
-
-    const slideWidth = 100 / visibleSlides;
-
-    slides.forEach((slide) => {
-      slide.style.flex = `0 0 ${slideWidth}%`;
-    });
-
-    track.style.transform =
-      `translateX(-${currentIndex * slideWidth}%)`;
-
-    /*
-     * Update dots
-     */
-    [...dots.children].forEach((dot, index) => {
-      dot.classList.toggle(
-        'active',
-        index === currentIndex,
-      );
-    });
-  }
-
-  /*
-   * Next
-   */
-  function nextSlide() {
-    const maxIndex = getMaxIndex();
-
-    currentIndex += 1;
-
-    if (currentIndex > maxIndex) {
-      currentIndex = 0;
-    }
-
-    updateCarousel();
-  }
-
-  /*
-   * Previous
-   */
-  function previousSlide() {
-    const maxIndex = getMaxIndex();
-
-    currentIndex -= 1;
-
-    if (currentIndex < 0) {
-      currentIndex = maxIndex;
-    }
-
-    updateCarousel();
-  }
-
-  /*
-   * Arrow events
-   */
   previousButton.addEventListener('click', () => {
     previousSlide();
     restartAutoplay();
@@ -245,10 +222,6 @@ export default async function decorate(block) {
     nextSlide();
     restartAutoplay();
   });
-
-  /*
-   * Keyboard navigation
-   */
   block.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowLeft') {
       previousSlide();
@@ -260,10 +233,6 @@ export default async function decorate(block) {
       restartAutoplay();
     }
   });
-
-  /*
-   * Touch / swipe
-   */
   let touchStartX = 0;
 
   block.addEventListener(
@@ -295,45 +264,9 @@ export default async function decorate(block) {
     },
     { passive: true },
   );
-
-  /*
-   * Autoplay
-   */
-  function startAutoplay() {
-    stopAutoplay();
-
-    // Don't autoplay if there is nothing to slide
-    if (slides.length <= getVisibleSlides()) {
-      return;
-    }
-
-    autoplayTimer = setInterval(() => {
-      nextSlide();
-    }, 5000);
-  }
-
-  function stopAutoplay() {
-    if (autoplayTimer) {
-      clearInterval(autoplayTimer);
-      autoplayTimer = null;
-    }
-  }
-
-  function restartAutoplay() {
-    stopAutoplay();
-    startAutoplay();
-  }
-
-  /*
-   * Pause when mouse is over carousel
-   */
   block.addEventListener('mouseenter', stopAutoplay);
 
   block.addEventListener('mouseleave', startAutoplay);
-
-  /*
-   * Pause when browser tab is hidden
-   */
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
       stopAutoplay();
@@ -341,10 +274,6 @@ export default async function decorate(block) {
       startAutoplay();
     }
   });
-
-  /*
-   * Resize
-   */
   window.addEventListener('resize', () => {
     const maxIndex = getMaxIndex();
 
@@ -355,10 +284,6 @@ export default async function decorate(block) {
     createDots();
     updateCarousel();
   });
-
-  /*
-   * Initial setup
-   */
   createDots();
   updateCarousel();
   startAutoplay();

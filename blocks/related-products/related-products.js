@@ -51,10 +51,8 @@ export default async function decorate(block) {
     const category = authoredCategory
       || value(currentProduct || {}, 'category', 'Category').trim().toLowerCase();
 
-    const relatedProducts = products.filter((product) =>
-      normalizedPath(product) !== currentPath
-      && value(product, 'category', 'Category').trim().toLowerCase() === category,
-    );
+    const relatedProducts = products.filter((product) => normalizedPath(product) !== currentPath
+      && value(product, 'category', 'Category').trim().toLowerCase() === category);
 
     if (!relatedProducts.length) {
       block.innerHTML = '<p class="related-products-empty">No related products available.</p>';
@@ -67,8 +65,7 @@ export default async function decorate(block) {
         ${relatedProducts.map(renderProductCard).join('')}
       </div>
     `;
-  } catch (error) {
-    console.error('Unable to load related products:', error);
+  } catch {
     block.innerHTML = '<p class="related-products-empty">Unable to load related products.</p>';
   }
 }

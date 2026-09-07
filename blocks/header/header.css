@@ -290,7 +290,7 @@ header nav .nav-account-label {
   height: 1px;
   padding: 0;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
 }
@@ -369,7 +369,7 @@ header nav .nav-cart-items {
   list-style: none;
 }
 
-header nav .nav-cart-items li {
+header nav .nav-tools .nav-cart-items li {
   padding: 8px 0;
   border-bottom: 1px solid #eee;
   font-size: 14px;

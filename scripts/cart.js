@@ -15,7 +15,7 @@ function writeItems(items) {
   try {
     window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
   } catch (error) {
-    // Storage may be unavailable in private browsing or restricted contexts.
+    /* storage may be unavailable */
   }
 
   window.dispatchEvent(new CustomEvent('cart:updated'));
@@ -44,6 +44,10 @@ function normalizeItem(product, quantity) {
     quantity: normalizeQuantity(quantity),
     image: String(product.image ?? product.Image ?? '').trim(),
   };
+}
+
+export function getItems() {
+  return readItems();
 }
 
 export function addItem(product) {
@@ -97,10 +101,6 @@ export function updateQty(sku, quantity) {
 export function clearCart() {
   writeItems([]);
   return [];
-}
-
-export function getItems() {
-  return readItems();
 }
 
 export function getTotals() {

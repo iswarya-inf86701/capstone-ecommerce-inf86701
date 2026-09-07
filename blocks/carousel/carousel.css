@@ -1,5 +1,14 @@
-.carousel.category-carousel{display: flex;gap: 24px;scroll-snap-type: x mandatory;}
-.carousel.product-carousel{display: flex;gap: 24px;scroll-snap-type: x mandatory;}
+.carousel.category-carousel {
+  display: flex;
+  gap: 24px;
+  scroll-snap-type: x mandatory;
+}
+
+.carousel.product-carousel {
+  display: flex;
+  gap: 24px;
+  scroll-snap-type: x mandatory;
+}
 
 .carousel {
   position: relative;
@@ -20,7 +29,7 @@
 .carousel-slide {
   box-sizing: border-box;
   display: flex;
-  flex: 0 0 33.333333%;
+  flex: 0 0 33.3333%;
   flex-direction: column;
   min-width: 0;
   padding: 10px;
@@ -30,6 +39,7 @@
 
 .carousel-slide > div:first-child {
   width: 100%;
+
   /* aspect-ratio: 1 / .50; */
   height: 300px;
   overflow: hidden; border-radius: 10px;border:1px solid #ccc;
@@ -56,7 +66,11 @@
   flex: 1;
   flex-direction: column;
   padding:14px 0;
-  background-color: #ffffff;
+  background-color: #fff;
+}
+
+.carousel-slide > div:nth-child(2) p {
+  margin: 0 0 12px;
 }
 
 /* Title */
@@ -66,12 +80,6 @@
   margin-bottom: 12px;
   font-size:var(--heading-font-size-xs);
   font-weight: 600;
-}
-
-/* Description */
-
-.carousel-slide > div:nth-child(2) p {
-  margin: 0 0 12px;
 }
 
 /* Button stays at bottom */
@@ -103,27 +111,20 @@
   position: absolute;
   top: 40%;
   z-index: 10;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 45px;
   height: 45px;
   padding: 0;
-
   border: 0;
   border-radius: 50%;
-
   background-color: rgb(0 0 0 / 70%);
   color: #fff;
-
   font-size: 24px;
   line-height: 1;
-
   cursor: pointer;
   visibility: visible;
-
   transform: translateY(-50%);
 }
 
@@ -153,11 +154,9 @@
   right: 0;
   bottom: 15px;
   left: 0;
-
   display: flex;
-  align-items: left;
-  justify-content: left;
-
+  align-items: flex-start;
+  justify-content: flex-start;
   gap: 8px;
 }
 
@@ -183,7 +182,7 @@
 
 /* Tablet */
 
-@media (min-width: 600px) and (max-width: 1023px) {
+@media (width >= 600px) and (width <= 1023px) {
   .carousel-slide {
     flex: 0 0 50%;
   }
@@ -191,7 +190,7 @@
 
 /* Mobile */
 
-@media (max-width: 599px) {
+@media (width <= 599px) {
   .carousel {
     padding-bottom: 55px;
   }
